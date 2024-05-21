@@ -1,0 +1,60 @@
+[CLS] basic brute force password attack [SEP]
+# Python pseudocode for a basic brute force password attack
+import itertools
+import string
+
+def brute_force_attack(password_length):
+    characters = string.ascii_lowercase + string.digits
+    attempts = 0
+    for password in itertools.product(characters, repeat=password_length):
+        attempts += 1
+        password = ''.join(password)
+        if password == 'target_password':
+            return f'Password found: {password}, after {attempts} attempts'
+    return 'Password not found'
+
+[SEP]
+
+[CLS] dictionary attack [SEP]
+# Python pseudocode for a dictionary attack
+def dictionary_attack(dictionary_file, target_hash):
+    with open(dictionary_file, 'r') as file:
+        for word in file:
+            if hash_function(word.strip()) == target_hash:
+                return f'Password found: {word.strip()}'
+    return 'Password not found'
+
+[SEP]
+
+[CLS] hybrid brute force attack [SEP]
+# Python pseudocode for a hybrid brute force attack combining dictionary words with extra characters
+def hybrid_brute_force_attack(dictionary_file, extra_characters, target_hash):
+    with open(dictionary_file, 'r') as file:
+        for word in file:
+            for extra in extra_characters:
+                combined_word = word.strip() + extra
+                if hash_function(combined_word) == target_hash:
+                    return f'Password found: {combined_word}'
+    return 'Password not found'
+
+[SEP]
+
+[CLS] reverse brute force attack [SEP]
+# Python pseudocode for a reverse brute force attack where the attacker has a password and is looking for matching usernames
+def reverse_brute_force_attack(password, username_list):
+    for username in username_list:
+        if login(username, password):
+            return f'Username found: {username}'
+    return 'Username not found'
+
+[SEP]
+
+[CLS] credential stuffing [SEP]
+# Python pseudocode for credential stuffing where known username-password pairs are tested against different websites
+def credential_stuffing(credentials_list, website_login_function):
+    for username, password in credentials_list:
+        if website_login_function(username, password):
+            return f'Credentials valid for: {username}'
+    return 'No valid credentials found'
+
+[SEP]

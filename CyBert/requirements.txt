@@ -1,0 +1,17 @@
+nltk==3.8.1
+numpy==1.25.2
+torch==1.11.0
+flask
+bleach
+requests
+bs4
+nltk
+networkx
+matplotlib
+spacy
+rdflib
+transformers
+numpy
+tf-keras
+scikit-learn
+icecream

@@ -1,0 +1,79 @@
+[CLS] basic network scan [SEP]
+nmap 192.168.1.1
+[SEP]
+
+[CLS] scan specific ports [SEP]
+nmap -p 80,443 192.168.1.1
+[SEP]
+
+[CLS] scan a range of ports [SEP]
+nmap -p 1-100 192.168.1.1
+[SEP]
+
+[CLS] aggressive scan [SEP]
+nmap -A 192.168.1.1
+[SEP]
+
+[CLS] scan an entire subnet [SEP]
+nmap 192.168.1.0/24
+[SEP]
+
+[CLS] os detection [SEP]
+nmap -O 192.168.1.1
+[SEP]
+
+[CLS] service version detection [SEP]
+nmap -sV 192.168.1.1
+[SEP]
+
+[CLS] tcp syn scan [SEP]
+nmap -sS 192.168.1.1
+[SEP]
+
+[CLS] udp scan [SEP]
+nmap -sU 192.168.1.1
+[SEP]
+
+[CLS] scan using a specific network interface [SEP]
+nmap --interface eth0 192.168.1.1
+[SEP]
+
+[CLS] scan using a specific script [SEP]
+nmap --script=http-title 192.168.1.1
+[SEP]
+
+[CLS] scan with a decoy [SEP]
+nmap -D 192.168.1.2 192.168.1.1
+[SEP]
+
+[CLS] scan with a specific source port [SEP]
+nmap --source-port 53 192.168.1.1
+[SEP]
+
+[CLS] scan with fragmented packets [SEP]
+nmap -f 192.168.1.1
+[SEP]
+
+[CLS] perform a fast scan [SEP]
+nmap -T4 192.168.1.1
+[SEP]
+
+[CLS] scan ipv6 addresses [SEP]
+nmap -6 ipv6_address
+[SEP]
+
+[CLS] scan for vulnerabilities [SEP]
+nmap --script=vuln 192.168.1.1
+[SEP]
+
+[CLS] scan and output to a file [SEP]
+nmap -oN output.txt 192.168.1.1
+[SEP]
+
+[CLS] scan and save output in all formats [SEP]
+nmap -oA output 192.168.1.1
+[SEP]
+
+[CLS] scan and exclude certain hosts [SEP]
+nmap 192.168.1.1/24 --exclude 192.168.1.5
+[SEP]

@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberAI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+
+        
+
+        #github{
+            margin-top: 14%;
+            font-size: 2vh;
+            color: #1e1e1e;
+        }
+        #chatArea {
+            overflow-y: auto; 
+            margin-bottom: 10vh;
+        }
+
+        #sendButton{
+            background-color: #333;
+            color:#ffffff;
+        }
+
+        .answer-bubble{
+            padding: 10px 15px;
+            border-radius: 20px;
+            background-color: #e3b3b3;
+            display: block;
+            position: relative;
+            margin: 10px;
+            
+        }
+        .chat-bubble {
+            padding: 10px 15px;
+            border-radius: 20px;
+            background-color: #f7f7f7;
+            display: inline-block;
+            position: relative;
+            margin: 10px;
+        }
+        .chat-bubble {
+            max-width: 100%; 
+            white-space: nowrap;
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+        }
+
+        .chat-bubble {
+            max-width: 100%; 
+            overflow-x: auto; 
+        }
+
+        .chat-bubble {
+            max-height: 30vh; 
+            overflow-y: auto;
+        }
+
+        .chat-bubble::after {
+            min-height: 5vh;
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #f7f7f7;
+            top: 100%;
+            left: 20px;
+        }
+        .user-input {
+            background-color: #f8f8f8;
+            border-radius: 20px;
+            padding-left: 2%;
+            width: 100%;
+        }
+        
+        .user-input::after {
+            border-top-color: #f8f8f8;
+        }
+        .fixed-bottom {
+            background-color: #f8f9fa;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+        }
+        .input-group {
+            display: flex;
+        }
+
+        .code-style {
+            background-color: #333;
+            color: green;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .description-style {
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+
+
+        body.dark-mode {
+            background-color: #202020;
+            color: #cacaca;
+        }
+
+        .dark-mode .chat-bubble {
+            background-color: #333333;
+            color: #cacaca;
+        }
+
+        .dark-mode .code-style{
+            color: green;
+        }
+
+        .dark-mode .user-input {
+            background-color: #252525;
+            color: #cacaca;
+        }
+
+        .dark-mode .fixed-bottom {
+            background-color: #1e1e1e;
+            box-shadow: 0 -2px 5px rgba(255,255,255,0.1);
+        }
+
+        .dark-mode #sendButton{
+            background-color: #7e2c2c;
+        }
+        .dark-mode #github{
+            color:#cacaca;
+        }
+        .dark-mode .answer-bubble{
+            background-color: #7e2c2c;
+        }
+
+        .btn-toggle-dark-mode {
+            background-color: #ffffff;
+            color: #121212;
+            border: 1px solid #121212;
+        }
+
+        .btn-toggle-dark-mode.active {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .switch {
+        position: fixed;
+        display: inline-block;
+        margin-top: 3vh;
+        margin-left: 5vh;
+        width: 30px;
+        height: 17px;
+        }
+
+        .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+        }
+
+        .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        }
+
+        .slider:before {
+        position: absolute;
+        content: "";
+        height: 13px;
+        width: 13px;
+        left: 2px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        }
+
+        input:checked + .slider {
+        background-color: #333333;
+        }
+
+        input:focus + .slider {
+        box-shadow: 0 0 1px #1e1e1e;
+        }
+
+        input:checked + .slider:before {
+        -webkit-transform: translateX(13x);
+        -ms-transform: translateX(13px);
+        transform: translateX(13px);
+        }
+        .dark-mode #userInput {
+            color: #333;
+        }
+
+
+        .slider.round {
+        border-radius: 34px;
+        }
+
+        .slider.round:before {
+        border-radius: 50%;
+        }
+
+        html, body {
+        overflow-x: hidden;
+        }
+
+
+        @media screen and (max-width: 1300px) {
+            .right-elements{
+                display: none;
+            }
+        }
+        @media screen and (max-width: 900px) {
+            .switch{
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+
+    </div>
+    <div class="row">
+        <div class="col-1 ">
+            
+            <label class="switch">
+                <input type="checkbox" id="darkModeSwitch">
+                <span class="slider round" onclick="toggleDarkMode()"></span>
+                <p id="theme-mode" style="position: relative;">
+                    Light
+                </p>
+            </label>
+        </div>
+        <div class="col-9">
+            <center>
+                <h1 class="text-center my-4" id="chatWithCyberAI"><!--Chat wtih CyberAI--></h1>
+            </center>
+        </div>
+        <div class="col-2">
+
+            <div class="right-elements" style="position: fixed;">
+                <a id = "github" href="https://github.com/MuhammetSonmez" target="_blank" class="fa fa-github">@MuhammetSonmez</a>
+                <br>
+                <div class="container-fluid">
+                    <h5 style="margin-left: 2vh; margin-top: 2vh;">Bert answer</h5>
+                    <h6 style="margin-left: 2vh;">(This model is currently not effective for specific answers)</h6>
+                    <br>
+                    <label class="switch" style="margin-top: 0; margin-left:2vh; position: relative;">
+                        <input type="checkbox" id="bertAnswerSwitch">
+                        <span class="slider round"></span>
+                    </label>
+                    <br>
+                    <div id="bertChatArea">    
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+
+  
+    <div class="container">
+        
+
+        <div id="chatArea" class="row">
+            <!-- API responses -->
+        </div>
+
+        
+        <div class="fixed-bottom">
+            <div class="container">
+                <div class="input-group">
+                    <input type="text" id="userInput" class="form-control" placeholder="Ask me a question about XSS, SQL Injection and more!" onkeypress="handleKeyPress(event)">
+                    <button onclick="sendData()" id="sendButton" class="btn">Send</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
+
+    <script>
+
+    </script>
+
+    <script>
+        const container = document.getElementById("chatWithCyberAI");
+        const text = "Chat with ";
+
+        function randomInterval(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function animateText(i) {
+            if(i < text.length) {
+                setTimeout(() => {
+                    container.innerHTML += text[i];
+                    animateText(i + 1);
+                }, randomInterval(50,100));
+            }
+        }
+
+        const target = "CyberAI";
+        const alphabet = "asy0d#nA1wbIerhCqwm";
+        let result = "";
+        let index = 0; 
+        let subIndex = 0;
+
+        function print() {
+            if (index < target.length) {
+                if (subIndex < alphabet.length) {
+                    let currentChar = alphabet[subIndex];
+                    container.textContent = text + result + currentChar;
+                    if (currentChar === target.charAt(index)) {
+                        result += currentChar;
+                        index++;
+                        subIndex = 0;
+                    } else {
+                        subIndex++;
+                    }
+                    setTimeout(print, 30); 
+                }
+            }
+        }
+
+        window.onload = () => {
+            animateText(0);
+            setTimeout(print, text.length * 100);
+        };
+
+
+    </script>
+
+    <script>
+
+        function animateTextForResponse(i, value, elem, min, max) {
+            if (i < value.length) {
+                setTimeout(() => {
+                    elem.innerHTML += value[i];
+                    animateTextForResponse(i + 1, value, elem);
+                }, randomInterval(max, min));
+            }
+            window.scrollTo(0, document.body.scrollHeight);
+
+        }
+
+
+
+        function sendData() {
+            const userInput = document.getElementById('userInput').value;
+            if (userInput === ""){
+                return;
+            }
+            document.getElementById('userInput').value = "";
+            const chatArea = document.getElementById('chatArea');
+            const userBubble = document.createElement('div');
+            userBubble.className = 'user-input';
+            userBubble.innerText = userInput;
+            chatArea.appendChild(userBubble);    
+            fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data); 
+                if (data.answer !== null) {
+                    const answerBubble = document.createElement('div');
+                    answerBubble.className = 'answer-bubble';
+                    animateTextForResponse(0, data.answer, answerBubble, 20, 0);
+                    chatArea.appendChild(answerBubble);
+
+                }
+                if (data.code !== null && data.code !== undefined) {
+                    const codeBubble = document.createElement('pre');
+                    codeBubble.className = 'code-style';
+                    animateTextForResponse(0, data.code, codeBubble, 40, 20);
+                    chatArea.appendChild(codeBubble);
+
+
+                }
+                if (data.descriptions !== null && data.code !== undefined) {
+                    const descriptionsBubble = document.createElement('div');
+                    descriptionsBubble.className = 'chat-bubble description-style';
+                    descriptionsBubble.innerText = data.descriptions;
+                    chatArea.appendChild(descriptionsBubble);
+                }
+            })
+            .catch(error => {
+                console.error('error:', error);
+            });
+
+            var isBertActive = document.getElementById('bertAnswerSwitch').checked;
+            const bertChatArea = document.getElementById('bertChatArea');
+            if(isBertActive){
+                fetch('/api/bert',{
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify({ input: userInput })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.bert_answer !==null && data.bert_answer != "[CLS]"){
+
+                        const bert_answer = document.createElement('div');
+                        bert_answer.className = 'answer-bubble';
+                        bert_answer.innerText = data.bert_answer;
+                        bertChatArea.appendChild(bert_answer);
+                    }
+
+                })
+                .catch(error => {
+                console.error('error:', error);
+            });
+            }
+        }
+    </script>
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendData();
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        }
+
+
+    </script>
+    <script>
+        function toggleDarkMode() {
+            if(document.getElementById("theme-mode").textContent === "Dark"){
+                document.getElementById("theme-mode").textContent = "Light"
+            }
+            else document.getElementById("theme-mode").textContent = "Dark"
+            var body = document.body;
+            body.classList.toggle('dark-mode');
+    
+            var button = document.getElementById('darkModeButton');
+            button.classList.toggle('active');
+            
+           
+          
+    }
+
+
+
+    </script>
+    
+</body>
+</html>

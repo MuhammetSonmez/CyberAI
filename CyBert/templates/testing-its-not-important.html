@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Kullanımı</title>
+    <!-- Bootstrap CSS ekleme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            padding: 10px 0;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+            
+        }
+        .input-group {
+            display: flex;
+        }
+        div{
+            border: 8px black solid;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Girdi Gönder</h1>
+
+        <div class="row">
+            <div id="answerDiv" class="col-4" style="overflow: auto;"></div>
+            <div id="codeArea" class="col-4" style="overflow: auto;">
+                <div id="codeDescriptionDiv"></div>
+                <div id = "codeDiv"></div>
+            </div>
+            <div id="descriptionsDiv" class="col-4" style="overflow-y: auto; max-height: 80vh;"></div>
+        </div>
+        
+        <div class="fixed-bottom">
+            <div class="container">
+                <div class="input-group">
+                    <input type="text" id="userInput" class="form-control" onkeypress="handleKeyPress(event)">
+                    <button onclick="sendData()" class="btn btn-primary">Gönder</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- Bootstrap JS ve bağımlılıkları ekleme -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    
+    <script>
+        function sendData() {
+            const userInput = document.getElementById('userInput').value;
+            fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: userInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Yanıtı konsola yazdır
+                if (data.answer !== undefined) {
+                    document.getElementById('answerDiv').innerText = "Answer: " + data.answer;
+                }
+                if (data.code !== undefined) {
+                    document.getElementById('codeDiv').innerText = "Code: " + data.code;
+                }
+                if (data.code_description !== undefined) {
+                    document.getElementById('codeDescriptionDiv').innerText = "Code Description: " + data.code_description;
+                }
+                if (data.descriptions !== undefined) {
+                    document.getElementById('descriptionsDiv').innerText = "Descriptions: " + data.descriptions;
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Bir hata oluştu');
+            });
+        }
+    </script>
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendData();
+            }
+        }
+    </script>
+    
+</body>
+</html>

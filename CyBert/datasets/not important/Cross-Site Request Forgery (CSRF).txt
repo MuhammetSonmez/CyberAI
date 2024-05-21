@@ -1,0 +1,38 @@
+[CLS] basic csrf token implementation [SEP]
+# Pseudocode for implementing CSRF tokens in a web form
+<form method="post" action="/submit-form">
+    <input type="hidden" name="csrf_token" value="generated_csrf_token">
+    <!-- form fields -->
+    <input type="submit" value="Submit">
+</form>
+[SEP]
+
+[CLS] csrf token validation [SEP]
+# Pseudocode for validating CSRF tokens in server-side code
+if received_csrf_token == session_csrf_token:
+    process_form_data()
+else:
+    raise CSRFTokenValidationError('Invalid CSRF token')
+[SEP]
+
+[CLS] csrf protection with double submit cookie [SEP]
+# Pseudocode for CSRF protection using the double submit cookie technique
+set_cookie('csrf_cookie', generated_csrf_token)
+if received_csrf_cookie == received_csrf_token:
+    process_request()
+else:
+    raise CSRFProtectionError('CSRF validation failed')
+[SEP]
+
+[CLS] csrf protection using custom headers [SEP]
+# Pseudocode for CSRF protection by checking custom headers in AJAX requests
+if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+    process_ajax_request()
+else:
+    raise CSRFProtectionError('Missing custom header for AJAX request')
+[SEP]
+
+[CLS] csrf mitigation using same-site cookies [SEP]
+# Pseudocode for setting SameSite attribute in cookies for CSRF mitigation
+set_cookie('session_cookie', session_id, SameSite='Strict')
+[SEP]

