@@ -10,7 +10,7 @@ CyberAI is a language model trained on cybersecurity topics. This project is dev
   
   2. Cosine Similarity Model: Determines the correct response based on the topic title and the input provided.
 
-- **Pretrained BERT Model:** Utilizes a pretrained BERT model to better understand and answer questions related to cybersecurity.
+- **Pretrained BERT Model:** Utilizes a pretrained BERT model to better understand and answer questions related to cybersecurity.(seraching on the web)
 
 - **API Support:** A Flask-based API allows easy integration of CyberAI for users.
 
