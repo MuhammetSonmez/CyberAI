@@ -30,4 +30,4 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-![Video](https://github.com/MuhammetSonmez/CyberAI/blob/main/video/cybert-beta-2-0-1.mp4)
+![Video](https://github.com/MuhammetSonmez/CyberAI/raw/main/video/cybert-beta-2-0-1.mp4)
