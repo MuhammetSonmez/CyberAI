@@ -30,4 +30,7 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
-![Video](https://github.com/MuhammetSonmez/CyberAI/raw/main/video/cybert-beta-2-0-1.mp4)
+<video width="600" controls>
+  <source src="https://github.com/MuhammetSonmez/CyberAI/raw/main/video/cybert-beta-2-0-1.mp4" type="video/mp4">
+  Video
+</video>
