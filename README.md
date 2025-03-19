@@ -34,3 +34,5 @@ python app.py
   <source src="https://github.com/MuhammetSonmez/CyberAI/raw/main/video/cybert-beta-2-0-1.mp4" type="video/mp4">
   Video
 </video>
+
+![image](https://github.com/user-attachments/assets/07b5d2d8-232c-42ef-96a0-adebc91c2ac0)
